@@ -34,7 +34,7 @@ model.load_state_dict(torch.load(CHECKPOINT_PATH, map_location=device))
 model.to(device).eval()
 
 
-def _predict(image):
+def predict(image):
     if image is None:
         return None
     tensor = transform(image).unsqueeze(0).to(device)
@@ -42,7 +42,7 @@ def _predict(image):
     return {CLASS_NAMES[i]: float(probs[i]) for i in range(len(CLASS_NAMES))}
 
 
-predict = torch.inference_mode()(_predict)
+predict = torch.inference_mode()(predict)
 if spaces is not None:
     predict = spaces.GPU(predict)
 
