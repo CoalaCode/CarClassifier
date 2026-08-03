@@ -48,4 +48,5 @@ demo = gr.Interface(
 )
 
 if __name__ == "__main__":
-    demo.launch()
+    # ssr_mode=False: Gradio's Node.js SSR subprocess crashes on some Spaces hardware.
+    demo.launch(ssr_mode=False)
