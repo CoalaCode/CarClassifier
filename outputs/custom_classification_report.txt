@@ -1,0 +1,11 @@
+              precision    recall  f1-score   support
+
+        Audi       0.26      0.54      0.35       113
+         BMW       0.20      0.03      0.05        78
+    Mercedes       0.38      0.11      0.17       103
+     Porsche       0.33      0.47      0.39       106
+  Volkswagen       0.38      0.29      0.33       115
+
+    accuracy                           0.30       515
+   macro avg       0.31      0.29      0.26       515
+weighted avg       0.32      0.30      0.27       515

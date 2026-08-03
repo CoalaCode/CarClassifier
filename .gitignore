@@ -1,0 +1,26 @@
+# Dataset (regenerate with crawler.py, see README)
+Cars/
+
+# Trained model weights (large binaries, not source)
+outputs/*.pth
+outputs/*.pt
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.ipynb_checkpoints/
+*.egg-info/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Editor / OS
+.vscode/
+.DS_Store
+
+# Gradio cache
+gradio_cached_examples/
+flagged/
