@@ -3,6 +3,13 @@
 Runs locally with `python app.py`, and is the entrypoint for the Hugging Face Space
 (the Space just needs this file + src/ + requirements.txt + a checkpoint in outputs/).
 """
+try:
+    # Must be imported before torch: Hugging Face Spaces' gradio integration imports
+    # this from a background thread, and it errors if CUDA was already initialized.
+    import spaces  # noqa: F401
+except ImportError:
+    pass  # only present inside a Hugging Face Space
+
 import os
 from pathlib import Path
 
