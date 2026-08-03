@@ -6,9 +6,11 @@ Runs locally with `python app.py`, and is the entrypoint for the Hugging Face Sp
 try:
     # Must be imported before torch: Hugging Face Spaces' gradio integration imports
     # this from a background thread, and it errors if CUDA was already initialized.
-    import spaces  # noqa: F401
+    # Only present when running on a Hugging Face Space (this one uses ZeroGPU
+    # hardware, which requires at least one @spaces.GPU-decorated function).
+    import spaces
 except ImportError:
-    pass  # only present inside a Hugging Face Space
+    spaces = None
 
 import os
 from pathlib import Path
@@ -32,13 +34,17 @@ model.load_state_dict(torch.load(CHECKPOINT_PATH, map_location=device))
 model.to(device).eval()
 
 
-@torch.inference_mode()
-def predict(image):
+def _predict(image):
     if image is None:
         return None
     tensor = transform(image).unsqueeze(0).to(device)
     probs = torch.softmax(model(tensor), dim=1)[0].cpu()
     return {CLASS_NAMES[i]: float(probs[i]) for i in range(len(CLASS_NAMES))}
+
+
+predict = torch.inference_mode()(_predict)
+if spaces is not None:
+    predict = spaces.GPU(predict)
 
 
 demo = gr.Interface(
