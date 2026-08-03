@@ -2,7 +2,7 @@
 
 A CNN that classifies photos of cars into 5 brands — Audi, BMW, Mercedes, Porsche, Volkswagen — trained on ~2,500 images scraped from Google Images. Includes a from-scratch CNN, a fine-tuned ResNet18 baseline, full evaluation (training curves, confusion matrix, per-class metrics, sample predictions), and a live demo.
 
-**[Try the live demo on Hugging Face Spaces →](#)** *(link added after deployment, see [Deploying the demo](#deploying-the-demo))*
+**[Try the live demo on Hugging Face Spaces →](https://huggingface.co/spaces/CoalaCode99/CarClassifier)**
 
 ## Results
 
@@ -105,10 +105,12 @@ Opens a Gradio UI at `http://localhost:7860` — upload a car photo, get the top
 
 ## Deploying the demo
 
+Already live at [huggingface.co/spaces/CoalaCode99/CarClassifier](https://huggingface.co/spaces/CoalaCode99/CarClassifier). To redeploy or update it:
+
 1. Train a model and confirm `outputs/resnet18_best.pth` exists.
-2. Create a new [Hugging Face Space](https://huggingface.co/new-space) (SDK: Gradio).
-3. Push `app.py`, `src/`, `requirements.txt`, and the checkpoint to the Space repo (via `git` or `huggingface_hub.upload_file`).
-4. Update the demo link at the top of this README.
+2. Push `app.py`, `src/__init__.py`, `src/data.py`, `src/model.py`, a minimal `requirements.txt` (`torch`, `torchvision`, `gradio`, `Pillow`), and the checkpoint (`outputs/resnet18_best.pth`) to the Space repo, e.g. via `huggingface_hub.HfApi().upload_file(...)`.
+3. This Space runs on free **ZeroGPU** hardware, which requires at least one `@spaces.GPU`-decorated function — see the `spaces` import and `predict` wrapping at the top/bottom of `app.py`. On other hardware tiers that decorator is a no-op (the `spaces` package only exists inside a Space).
+4. Gradio's SSR (server-side rendering) subprocess doesn't run reliably on Spaces infrastructure yet — `demo.launch(ssr_mode=False)` avoids it.
 
 ## Requirements
 
